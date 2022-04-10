@@ -34060,17 +34060,18 @@
 	      };
 	      fetch("/records", requestOptions).then(function (response) {
 	        if (response.ok) {
-	          if (response.ok) {
-	            return response.json();
-	          } else {
-	            _this2.setState({
-	              error: response.statusText
-	            });
-	            console.log(response);
-	          }
+	          return response.json();
 	        }
+	        console.log(response.status + " text: " + response.statusText);
+	        throw Error(response.status + " text: " + response.statusText);
 	      }).then(function (data) {
-	        return _this2.setState({ error: data + " Success " });
+	        _this2.setState({
+	          error: data.email + " Success "
+	        });
+	      }).catch(function (err) {
+	        _this2.setState({
+	          error: err.message
+	        });
 	      });
 	    }
 	  }, {
@@ -34267,16 +34268,12 @@
 	         fetch("/records?email=" + this.state.emailForGet).then(function (response) {
 	            if (response.ok) {
 	               return response.json();
-	            } else {
-	               _this2.setState({
-	                  isLoaded: false,
-	                  error: response.statusText
-	               });
-	               console.log(response.statusText);
 	            }
+	            console.log(response.status + " text: " + response.statusText);
+	            throw Error(response.status + " text: " + response.statusText);
 	         }).then(function (result) {
 	            _this2.setItems(result);
-	         }, function (err) {
+	         }).catch(function (err) {
 	            _this2.setState({
 	               isLoaded: false,
 	               error: err.message
@@ -34376,7 +34373,7 @@
 	            _react2.default.createElement(
 	               "div",
 	               { style: { color: 'red' } },
-	               this.state.err
+	               this.state.error
 	            ),
 	            _react2.default.createElement(
 	               "table",

@@ -33,17 +33,21 @@ class AddRecord extends React.Component {
     fetch("/records", requestOptions)
             .then(response => {
                 if(response.ok){
-                    if (response.ok) {
-                      return response.json();
-                    } else {
-                      this.setState({
-                         error: response.statusText
-                      });
-                      console.log(response);
-                    }
+                  return response.json();
                 }
+                console.log(response.status + " text: "+response.statusText);
+                throw Error(response.status + " text: "+response.statusText);
             })
-            .then(data => this.setState({ error: data+" Success " }));
+            .then(data => {
+                    this.setState({
+                        error: data.email+" Success "
+                    })
+                })
+            .catch((err) => {
+                this.setState({
+                    error: err.message
+                })
+            });
       };
   handleChange(event) {
 	  if(event.target.name==='emailForPost'){

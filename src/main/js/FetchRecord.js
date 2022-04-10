@@ -17,27 +17,22 @@ class FetchRecord extends React.Component {
     fetchRemoteItems() {
        fetch("/records?email="+this.state.emailForGet)
           .then(response => {
-                  if (response.ok) {
-                    return response.json();
-                  } else {
-                    this.setState({
-                       isLoaded: false,
-                       error: response.statusText
-                    });
-                    console.log(response.statusText);
-                  }
+              if (response.ok) {
+                return response.json();
+              }
+              console.log(response.status + " text: "+response.statusText);
+              throw Error(response.status + " text: "+response.statusText);
           })
           .then(
              (result) => {
                 this.setItems(result);
-             },
-             (err) => {
-                this.setState({
-                   isLoaded: false,
-                   error: err.message
-                });
              }
-          )
+          ).catch((err) => {
+            this.setState({
+                 isLoaded: false,
+                 error: err.message
+              });
+          })
     };
   setItems(remoteItems) {
      var items = [];
@@ -96,7 +91,7 @@ class FetchRecord extends React.Component {
 		<input type="email" value={this.state.emailForGet} name="emailForGet" onChange={this.handleChange} />
         <button onClick={this.fetchRemoteItems} disabled= {!this.state.emailForGetValid}>Fetch Records</button>
 		<div style= {{ color: 'red'}}>{this.state.errorForGet}</div>
-		<div style= {{ color: 'red'}}>{this.state.err}</div>
+		<div style= {{ color: 'red'}}>{this.state.error}</div>
            <table onMouseOver={this.handleMouseOver}>
               <thead>
                  <tr>

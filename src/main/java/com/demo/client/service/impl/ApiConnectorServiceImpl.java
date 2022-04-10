@@ -37,6 +37,7 @@ public class ApiConnectorServiceImpl implements ApiConnectorService {
             .queryParam("length", length)
             .build()
             .toUri();
+		log.info("Accessing URL: {}",uri);	
         ResponseEntity<TtRecord[]> response = restTemplate.getForEntity(uri, TtRecord[].class);
         if (response != null) {
             if (response.getStatusCodeValue() >= 200 && response.getStatusCodeValue() < 300) {
@@ -69,6 +70,7 @@ public class ApiConnectorServiceImpl implements ApiConnectorService {
         URI uri = UriComponentsBuilder.fromHttpUrl(timeTrackerApplicationUri)
             .build()
             .toUri();
+		log.info("Accessing URL: {}",uri);	
         ResponseEntity<TtRecord> response = restTemplate.postForEntity(uri, request, TtRecord.class);
         if (response != null) {
             if (response.getStatusCodeValue() >= 200 && response.getStatusCodeValue() < 300) {
